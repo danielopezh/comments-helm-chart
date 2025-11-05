@@ -1,0 +1,21 @@
+namespace: daniel-lopez-fisa-dev
+
+frontend:
+  image: danielopezh/comments-frontend
+  tag: 1
+  replicas: 1
+
+backendApi:
+  image: danielopezh/comments-backend-api
+  tag: 1
+  replicas: 1
+
+backendData:
+  image: danielopezh/comments-backend-data
+  tag: 1
+  replicas: 1
+
+database:
+  image: danielopezh/comments-database
+  tag: 1
+  storage: 1Gi

@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-data
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: backend-data
+spec:
+  replicas: {{ .Values.backendData.replicas }}
+  selector:
+    matchLabels:
+      app: backend-data
+  template:
+    metadata:
+      labels:
+        app: backend-data
+    spec:
+      containers:
+      - name: backend-data
+        image: {{ .Values.backendData.image }}:{{ .Values.backendData.tag }}
+        ports:
+        - containerPort: 3001
+        env:
+        - name: MONGO_URI
+          value: "mongodb://database-service:27017/"
+        resources:
+          requests:
+            cpu: "200m"
+            memory: "256Mi"
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 3001
+          initialDelaySeconds: 30
+          periodSeconds: 10

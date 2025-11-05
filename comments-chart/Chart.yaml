@@ -1,0 +1,6 @@
+apiVersion: v2
+name: comments-chart
+description: Sistema de Comentarios con Frontend, Backend-API, Backend-Data y MongoDB
+type: application
+version: {{ version }}
+appVersion: "1.0.0"
