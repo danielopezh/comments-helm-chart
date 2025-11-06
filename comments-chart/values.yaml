@@ -2,7 +2,7 @@ namespace: daniel-lopez-fisag-dev
 
 frontend:
   image: danielopezh/comments-frontend
-  tag: 1
+  tag: 2
   replicas: 1
 
 backendApi:
