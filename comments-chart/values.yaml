@@ -1,4 +1,4 @@
-namespace: daniel-lopez-fisa-dev
+namespace: daniel-lopez-fisag-dev
 
 frontend:
   image: danielopezh/comments-frontend
@@ -7,7 +7,7 @@ frontend:
 
 backendApi:
   image: danielopezh/comments-backend-api
-  tag: 1
+  tag: 2
   replicas: 1
 
 backendData:

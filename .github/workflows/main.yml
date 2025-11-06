@@ -4,7 +4,7 @@ on:
     branches: ["main"]
   workflow_dispatch:
 jobs:
-  deploy:
+  package:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -31,3 +31,30 @@ jobs:
           sed -i "s|{{ version }}|${{ github.run_number }}|g" ./comments-chart/Chart.yaml
           helm package ./comments-chart
           helm push ./comments-chart-${{ github.run_number }}.tgz oci://registry-1.docker.io/${{ secrets.DOCKER_USERNAME }}
+
+  deploy:
+    needs: package
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Install OC CLI
+        run: |
+          curl -L https://mirror.openshift.com/pub/openshift-v4/clients/ocp/latest/openshift-client-linux.tar.gz | tar xz
+          sudo mv oc /usr/local/bin/
+          oc version
+
+      - name: Install Helm
+        uses: azure/setup-helm@v3
+        with:
+          version: v3.12.0
+
+      - name: Login to OpenShift
+        uses: redhat-actions/oc-login@v1
+        with:
+          openshift_server_url: ${{ secrets.OPENSHIFT_SERVER }}
+          openshift_token: ${{ secrets.OPENSHIFT_TOKEN }}
+      
+      - name: Deploy with Helm
+        run: |
+          helm upgrade --install comments-system oci://registry-1.docker.io/${{ secrets.DOCKER_USERNAME }}/comments-chart --version ${{ github.run_number }} --values ./comments-chart/values.yaml
