@@ -29,6 +29,7 @@ jobs:
       - name: Package and Push Helm Chart
         run: |
           sed -i "s|{{ version }}|${{ github.run_number }}|g" ./comments-chart/Chart.yaml
+          helm dependency update ./comments-chart
           helm package ./comments-chart
           helm push ./comments-chart-${{ github.run_number }}.tgz oci://registry-1.docker.io/${{ secrets.DOCKER_USERNAME }}
 

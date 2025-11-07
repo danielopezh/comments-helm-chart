@@ -4,3 +4,23 @@ description: Sistema de Comentarios con Frontend, Backend-API, Backend-Data y Mo
 type: application
 version: {{ version }}
 appVersion: "1.0.0"
+dependencies:
+  - name: microservice-chart
+    version: "0.1.0"
+    repository: "file://./charts/microservice-chart"
+    alias: frontend
+  - name: microservice-chart
+    version: "0.1.0"
+    repository: "file://./charts/microservice-chart"
+    alias: backend-api
+  - name: microservice-chart
+    version: "0.1.0"
+    repository: "file://./charts/microservice-chart"
+    alias: backend-data
+  - name: microservice-chart
+    version: "0.1.0"
+    repository: "file://./charts/microservice-chart"
+    alias: database
+  - name: network-chart
+    version: "0.1.0"
+    repository: "file://./charts/network-chart"

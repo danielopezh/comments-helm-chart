@@ -1,0 +1,6 @@
+apiVersion: v2
+name: network-chart
+description: Network policies for microservices
+type: application
+version: 0.1.0
+appVersion: "1.0"

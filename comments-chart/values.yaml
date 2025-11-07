@@ -1,8 +1,11 @@
 namespace: daniel-lopez-fisag-dev
 
 frontend:
-  image: danielopezh/comments-frontend
-  tag: 3
+  name: frontend
+  namespace: daniel-lopez-fisag-dev
+  image:
+    repository: danielopezh/comments-frontend
+    tag: 3
   replicas: 1
   resources:
     requests:
@@ -11,10 +14,24 @@ frontend:
     limits:
       cpu: "200m"
       memory: "256Mi"
+  service:
+    enabled: true
+    port: 80
+    targetPort: 80
+  route:
+    enabled: true
+    host: frontend-daniel-lopez-fisag-dev.apps.sandbox-m4.g2pi.p1.openshiftapps.com
+  hpa:
+    enabled: false
+  statefulset:
+    enabled: false
 
-backendApi:
-  image: danielopezh/comments-backend-api
-  tag: 2
+backend-api:
+  name: backend-api
+  namespace: daniel-lopez-fisag-dev
+  image:
+    repository: danielopezh/comments-backend-api
+    tag: 2
   replicas: 1
   resources:
     requests:
@@ -23,13 +40,29 @@ backendApi:
     limits:
       cpu: "500m"
       memory: "512Mi"
+  service:
+    enabled: true
+    port: 80
+    targetPort: 3000
+  route:
+    enabled: true
+    host: backend-api-daniel-lopez-fisag-dev.apps.sandbox-m4.g2pi.p1.openshiftapps.com
   hpa:
+    enabled: true
     minReplicas: 1
     maxReplicas: 5
+  statefulset:
+    enabled: false
+  env:
+    - name: BACKEND_DATA_URL
+      value: "http://backend-data:80"
 
-backendData:
-  image: danielopezh/comments-backend-data
-  tag: 2
+backend-data:
+  name: backend-data
+  namespace: daniel-lopez-fisag-dev
+  image:
+    repository: danielopezh/comments-backend-data
+    tag: 2
   replicas: 1
   resources:
     requests:
@@ -38,11 +71,27 @@ backendData:
     limits:
       cpu: "500m"
       memory: "512Mi"
+  service:
+    enabled: true
+    port: 80
+    targetPort: 3001
+  route:
+    enabled: false
+  hpa:
+    enabled: false
+  statefulset:
+    enabled: false
+  env:
+    - name: MONGO_URL
+      value: "mongodb://database:27017/comments"
 
 database:
-  image: danielopezh/comments-database
-  tag: 2
-  storage: 1Gi
+  name: database
+  namespace: daniel-lopez-fisag-dev
+  image:
+    repository: danielopezh/comments-database
+    tag: 2
+  replicas: 1
   resources:
     requests:
       cpu: "200m"
@@ -50,3 +99,17 @@ database:
     limits:
       cpu: "500m"
       memory: "1Gi"
+  service:
+    enabled: true
+    port: 27017
+    targetPort: 27017
+  route:
+    enabled: false
+  hpa:
+    enabled: false
+  statefulset:
+    enabled: true
+    storage: 1Gi
+
+network-chart:
+  namespace: daniel-lopez-fisag-dev
