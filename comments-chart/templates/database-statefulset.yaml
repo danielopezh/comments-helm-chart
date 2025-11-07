@@ -26,11 +26,11 @@ spec:
           mountPath: /data/db
         resources:
           requests:
-            cpu: "200m"
-            memory: "512Mi"
+            cpu: {{ .Values.database.resources.requests.cpu }}
+            memory: {{ .Values.database.resources.requests.memory }}
           limits:
-            cpu: "500m"
-            memory: "1Gi"
+            cpu: {{ .Values.database.resources.limits.cpu }}
+            memory: {{ .Values.database.resources.limits.memory }}
   volumeClaimTemplates:
   - metadata:
       name: mongo-data
