@@ -20,23 +20,39 @@ jobs:
           openshift_server_url: ${{ secrets.OPENSHIFT_SERVER }}
           openshift_token: ${{ secrets.OPENSHIFT_TOKEN }}
 
-      - name: Clone Charts Repository
+      - name: Clone Microservices
         run: |
-          git clone https://github.com/danielopezh/reto.git charts-repo
+          git clone https://github.com/danielopezh/comments-database.git database
+          git clone https://github.com/danielopezh/comments-backend-data.git backend-data
+          git clone https://github.com/danielopezh/comments-backend-api.git backend-api
+          git clone https://github.com/danielopezh/comments-frontend.git frontend
+          git clone https://github.com/danielopezh/comments-network.git network
 
-      - name: Deploy All Services
+      - name: Deploy Database
         run: |
-          # Deploy database
-          helm upgrade --install database ./charts-repo/charts/microservice-chart -f ./charts-repo/values/database/values.yaml
-          
-          # Deploy backend-data
-          helm upgrade --install backend-data ./charts-repo/charts/microservice-chart -f ./charts-repo/values/backend-data/values.yaml
-          
-          # Deploy backend-api
-          helm upgrade --install backend-api ./charts-repo/charts/microservice-chart -f ./charts-repo/values/backend-api/values.yaml
-          
-          # Deploy frontend
-          helm upgrade --install frontend ./charts-repo/charts/microservice-chart -f ./charts-repo/values/frontend/values.yaml
-          
-          # Deploy network policies
-          helm upgrade --install network-policies ./charts-repo/charts/network-chart -f ./charts-repo/values/network/values.yaml
+          cd database
+          TAG=$(cat values.yaml | grep "tag:" | cut -d' ' -f2)
+          sed "s/{{ tag }}/$TAG/g" oc.yaml | oc apply -f -
+
+      - name: Deploy Backend Data
+        run: |
+          cd backend-data
+          TAG=$(cat values.yaml | grep "tag:" | cut -d' ' -f2)
+          sed "s/{{ tag }}/$TAG/g" oc.yaml | oc apply -f -
+
+      - name: Deploy Backend API
+        run: |
+          cd backend-api
+          TAG=$(cat values.yaml | grep "tag:" | cut -d' ' -f2)
+          sed "s/{{ tag }}/$TAG/g" oc.yaml | oc apply -f -
+
+      - name: Deploy Frontend
+        run: |
+          cd frontend
+          TAG=$(cat values.yaml | grep "tag:" | cut -d' ' -f2)
+          sed "s/{{ tag }}/$TAG/g" oc.yaml | oc apply -f -
+
+      - name: Deploy Network Policies
+        run: |
+          cd network
+          helm upgrade --install network-policies . -f values.yaml
