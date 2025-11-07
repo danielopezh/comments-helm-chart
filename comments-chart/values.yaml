@@ -12,10 +12,10 @@ backendApi:
 
 backendData:
   image: danielopezh/comments-backend-data
-  tag: 1
+  tag: 2
   replicas: 1
 
 database:
   image: danielopezh/comments-database
-  tag: 1
+  tag: 2
   storage: 1Gi
