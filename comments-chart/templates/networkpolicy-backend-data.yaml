@@ -27,10 +27,11 @@ spec:
     - protocol: TCP
       port: 27017
   - to:
-    - namespaceSelector: {}
-      podSelector:
+    - namespaceSelector:
         matchLabels:
-          app: openshift-dns
+          kubernetes.io/metadata.name: openshift-dns
     ports:
     - protocol: UDP
-      port: 53
+      port: 5353
+    - protocol: TCP
+      port: 5353
