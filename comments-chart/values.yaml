@@ -26,3 +26,5 @@ statefulset:
   enabled: false
   storage: 1Gi
 env: []
+networkPolicies:
+  enabled: false
