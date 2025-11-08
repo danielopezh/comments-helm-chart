@@ -1,6 +1,6 @@
 apiVersion: v2
 name: comments-chart
-description: Sistema de Comentarios con Frontend, Backend-API, Backend-Data y MongoDB
+description: Reusable chart for microservices
 type: application
 version: {{ version }}
 appVersion: "1.0.0"
