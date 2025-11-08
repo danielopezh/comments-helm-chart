@@ -17,6 +17,18 @@ spec:
     - namespaceSelector:
         matchLabels:
           network.openshift.io/policy-group: ingress
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          name: openshift-ingress
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: openshift-ingress
+  - from: []
+    ports:
+    - protocol: TCP
+      port: 8080
   egress:
   - to:
     - podSelector:
