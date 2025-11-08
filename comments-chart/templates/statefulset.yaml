@@ -38,12 +38,13 @@ spec:
         {{- end }}
         volumeMounts:
         - name: data
-          mountPath: /data
+          mountPath: /data/db
   volumeClaimTemplates:
   - metadata:
       name: data
     spec:
       accessModes: ["ReadWriteOnce"]
+      storageClassName: gp3
       resources:
         requests:
           storage: {{ .Values.statefulset.storage }}
