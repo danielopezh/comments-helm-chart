@@ -14,7 +14,7 @@ spec:
     kind: Service
     name: {{ .Values.name }}
   port:
-    targetPort: {{ .Values.service.port }}
+    targetPort: {{ .Values.service.targetPort }}
   tls:
     termination: edge
     insecureEdgeTerminationPolicy: Redirect
